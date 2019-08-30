@@ -53,7 +53,7 @@ export default class NotifyContent extends Component<INotifyContentProps> {
                 className="zent-notify-content-icon"
                 type={ICON_TYPE[status]}
               />
-              <div className="zent-notify-content-text">{text}</div>
+              <div>{text}</div>
             </div>
           </div>
         </NotifyTransition>
