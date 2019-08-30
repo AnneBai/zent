@@ -1,6 +1,8 @@
 @import './theme/default';
 @import './theme/font';
 
+$transition-duration: 160ms;
+
 .zent-notify-container {
   z-index: 10000;
   position: fixed;
@@ -15,14 +17,13 @@
   &-content {
     @include theme-shadow(modal);
     @include theme-color(background, stroke, 9);
+    @include font-normal;
     min-width: 148px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 14px 16px;
-    line-height: 20px;
     max-height: 48px;
-    font-size: $font-size-normal;
     border-radius: 4px;
     box-sizing: border-box;
 
@@ -43,7 +44,7 @@
     }
 
     &-text {
-      max-width: 434px;
+      max-width: 420px;
       max-height: 20px;
       overflow: hidden;
       white-space: nowrap;
@@ -57,90 +58,36 @@
 }
 
 .notify-appear {
-  animation-fill-mode: both;
-  animation-play-state: paused;
+  transform: translateY(-100%);
+  opacity: 0;
 }
 
-.notify-appear.notify-appear-active {
-  animation-play-state: running;
-  animation-name: zent-notify-move-in, zent-notify-move-in-opacity;
-  animation-duration: 0.16s;
+.notify-appear-active {
+  transform: translateY(0%);
+  opacity: 1;
+  transition-duration: $transition-duration;
+  transition-timing-function: opacity linear, transform ease-in;
 }
 
 .notify-exit {
-  animation-fill-mode: both;
-  animation-play-state: paused;
+  max-height: 48px;
+  opacity: 1;
 
   .zent-notify-content {
-    animation-fill-mode: both;
-    animation-play-state: paused;
-  }
-}
-
-.notify-exit.notify-exit-active {
-  animation-play-state: running;
-  animation-name: zent-notify-move-out, zent-notify-move-out-opacity;
-  animation-duration: 0.16s;
-
-  .zent-notify-content {
-    animation-play-state: running;
-    animation-name: zent-notify-content-move-out;
-    animation-duration: 0.16s;
-  }
-}
-
-@keyframes zent-notify-move-in {
-  0% {
-    transform: translateY(-100%);
-    animation-timing-function: ease-in;
-  }
-
-  100% {
     transform: translateY(0%);
   }
 }
 
-@keyframes zent-notify-move-in-opacity {
-  0% {
-    opacity: 0;
-    animation-timing-function: linear;
-  }
+.notify-exit-active {
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  transition-duration: $transition-duration;
+  transition-timing-function: opacity linear, max-height ease-out;
 
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes zent-notify-move-out {
-  0% {
-    max-height: 50px;
-    animation-timing-function: ease-out;
-  }
-
-  100% {
-    max-height: 0;
-    padding: 0;
-  }
-}
-
-@keyframes zent-notify-move-out-opacity {
-  0% {
-    opacity: 1;
-    animation-timing-function: linear;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes zent-notify-content-move-out {
-  0% {
-    transform: translateY(0%);
-    animation-timing-function: ease-out;
-  }
-
-  100% {
+  .zent-notify-content {
     transform: translateY(-100%);
+    transition-duration: $transition-duration;
+    transition-timing-function: transform ease-out;
   }
 }
